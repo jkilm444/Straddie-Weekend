@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#FAF7F0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:only light;background:#FAF7F0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html,body{background:#FAF7F0!important;min-height:100%}body{padding:0!important}.page-bg{background:#FAF7F0;color:#1E2A21;min-height:100vh;padding:24px 16px 64px}</style>
+<title>Straddie Camp Food</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,700;75..100,800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#FAF7F0; --surface:#FFFFFF; --sunk:#F2EDE2; --ink:#1E2A21; --muted:#5F6B5C; --line:#E6DFD0;
+  --accent:#2F5D3A; --accent-ink:#FFFFFF; --accent-soft:#E4EDE2; --sun:#9C5B26; --sun-soft:#F7ECDD; --done:#A7AB9E;
+  color-scheme:only light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 Manrope,"Helvetica Neue",Arial,sans-serif;padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.lede{color:var(--muted);max-width:62ch;margin:10px 0 0}
+header{display:flex;flex-direction:column;gap:6px}
+.num{font-variant-numeric:tabular-nums}
+button{font:700 14px Manrope,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-top:6px}
+.tab{border:0;background:none;border-radius:0;padding:10px 4px;margin-right:18px;font-size:16px;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.panel{display:flex;flex-direction:column;gap:28px}
+
+/* timeline */
+.timeline{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
+.day{position:relative}
+.day::before{content:"";position:absolute;left:-29px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.day[open]::before{background:var(--accent)}
+.day > summary{list-style:none;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.day > summary::-webkit-details-marker{display:none}
+.day[open] > summary{border-radius:12px 12px 0 0;border-bottom-color:transparent}
+.day-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.day-title h3{font-size:20px;font-weight:800}
+.day-meals{grid-column:1 / -1;color:var(--muted);font-size:14px}
+.chev{width:22px;height:22px;transition:transform .2s;color:var(--muted)}
+.day[open] .chev{transform:rotate(180deg)}
+.day-body{background:var(--surface);border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.pax{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 9px;white-space:nowrap}
+.pax.three{color:var(--sun);background:var(--sun-soft)}
+
+.meal{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.meal > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:150px 1fr auto;gap:14px;align-items:center;padding:10px}
+.meal > summary::-webkit-details-marker{display:none}
+.meal .thumb{width:150px;aspect-ratio:16/10;max-width:100%;border-radius:8px;overflow:hidden;display:block}
+.meal .thumb svg,.meal-hero svg{display:block;width:100%;height:100%}
+.slot{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+.meal h4{font-size:18px;font-weight:800;margin:2px 0}
+.meta{font-size:13px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.open-hint{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap}
+.meal[open] .open-hint .o{display:none}
+.meal:not([open]) .open-hint .c{display:none}
+.meal-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;padding:6px 14px 18px}
+.meal-hero{border-radius:10px;overflow:hidden;aspect-ratio:16/10;max-width:100%}
+.caption{font-size:12px;color:var(--muted);margin-top:6px}
+.ing h5,.method h5{font:700 12px Archivo,"Helvetica Neue",Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.ing ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.ing li{display:grid;grid-template-columns:minmax(90px,auto) 1fr;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.ing li b{font-weight:600;font-variant-numeric:tabular-nums}
+.method ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.method ol li::marker{color:var(--accent);font-weight:700}
+.tipline{margin-top:12px;font-size:14px;background:var(--sun-soft);border-radius:8px;padding:8px 12px}
+.tipline strong{color:var(--sun)}
+
+/* shopping */
+.totals{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:24px;align-items:start}
+.bigtotal{background:var(--ink);color:var(--bg);border-radius:12px;padding:20px}
+.bigtotal .amt{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:44px;font-weight:800;line-height:1;margin:6px 0 10px}
+.bigtotal p{margin:0;font-size:14px;opacity:.85}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:140px 1fr 64px;gap:10px;align-items:center;font-size:14px}
+.track{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.fill{height:100%;background:var(--accent);border-radius:5px}
+.bar .v{text-align:right}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;border-radius:7px;padding:7px 14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.progress{color:var(--muted);font-size:14px}
+.cols{display:grid;grid-template-columns:1fr;gap:22px}
+.cols.two{grid-template-columns:1fr 1fr}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.col-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.col-head h3{font-size:20px;font-weight:800}
+.col-head .sub{font-size:13px;color:var(--muted);display:block;font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-weight:500}
+.col-head .num{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:22px}
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;padding:11px 16px;border-bottom:1px solid var(--line)}
+.sec-head h4{font-size:16px;font-weight:800}
+.sec-head .num{color:var(--muted);font-weight:600}
+.item{display:grid;grid-template-columns:22px 1fr auto;gap:12px;padding:9px 16px;border-top:1px solid var(--line);align-items:start}
+.item:first-of-type{border-top:0}
+.item input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.item label{cursor:pointer;display:flex;flex-direction:column;gap:1px;min-width:0}
+.name{font-weight:600}
+.qty{font-weight:500}
+.for{font-size:13px;color:var(--muted)}
+.note{font-size:13px;color:var(--sun);font-weight:500}
+.price{font-weight:600;white-space:nowrap;text-align:right}
+.price small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
+.item.checked .name,.item.checked .price{color:var(--done);text-decoration:line-through}
+.notes{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.tip{border-left:3px solid var(--sun);padding:4px 0 4px 14px}
+.tip strong{display:block;margin-bottom:2px}
+.tip p{margin:0;color:var(--muted);font-size:14px}
+footer{color:var(--muted);font-size:13px;max-width:72ch}
+
+@media (max-width:760px){
+  .totals,.notes,.cols.two{grid-template-columns:1fr}
+  .meal-body{grid-template-columns:1fr}
+  .meal > summary{grid-template-columns:110px 1fr}
+  .meal .thumb{width:110px}
+  .open-hint{display:none}
+}
+@media (max-width:440px){
+  .bar{grid-template-columns:104px 1fr 56px}
+  .timeline{padding-left:26px}
+  .timeline::before{left:7px}
+  .day::before{left:-25px}
+}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
+
+/* ---- light forest restyle ---- */
+body{padding-block:32px 80px}
+.wrap{gap:32px;max-width:1000px}
+h1{font-size:clamp(36px,7vw,60px);font-weight:800;font-stretch:85%;letter-spacing:-.025em;line-height:1}
+h2{font-size:26px;font-weight:800;font-stretch:85%;letter-spacing:-.01em}
+.eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--accent)}
+.slot{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+header{gap:10px}
+.lede{font-size:16px;color:var(--muted);max-width:56ch;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.fact b{color:var(--accent)}
+
+.tabs{border:0;gap:6px;background:var(--bg);padding:8px 0}
+.tab{font-size:15px;font-weight:700;padding:10px 20px;margin:0;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.tab:hover{border-color:var(--accent);color:var(--ink);background:var(--surface)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button{border-radius:8px;background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);padding:9px 16px}
+button:hover{background:#244A2E;border-color:#244A2E}
+#reset{background:var(--surface);color:var(--ink);border-color:var(--line)}
+#reset:hover{border-color:var(--accent);background:var(--surface)}
+.seg{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{background:none;border:0;color:var(--muted);border-radius:7px}
+.seg button:hover{background:none;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(30,42,33,.12)}
+
+/* at a glance */
+.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g-day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.g-day:hover{border-color:var(--accent);background:var(--surface)}
+.g-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.g-top strong{font-family:Archivo,sans-serif;font-stretch:85%;font-size:20px;font-weight:800}
+.g-day ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:500;line-height:1.35}
+.g-day li{display:grid;grid-template-columns:18px 1fr;gap:6px}
+.g-day li span{color:var(--muted);font-size:11px;font-weight:700;padding-top:1px}
+
+.timeline{padding-left:0;gap:14px}
+.timeline::before{display:none}
+.day{border:0;scroll-margin-top:80px}
+.day::before{display:none}
+.day > summary{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+.day[open] > summary{border-radius:14px 14px 0 0;border-bottom:1px solid var(--line);background:var(--accent-soft)}
+.day-title{gap:12px;align-items:center}
+.day-title h3{font-size:24px;font-weight:800;font-stretch:85%;letter-spacing:-.01em}
+.day-body{background:var(--surface);border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px;padding:8px 20px 20px;gap:0}
+.pax{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:0}
+.day[open] .pax{background:var(--surface)}
+.pax.three{background:var(--sun-soft);color:var(--sun)}
+.meta{font-size:13px;color:var(--muted)}
+.meta span+span::before{content:"·";margin-right:12px}
+.meal{border:0;border-top:1px solid var(--line);background:none;border-radius:0}
+.meal:first-child{border-top:0}
+.meal > summary{padding:16px 0;grid-template-columns:150px 1fr auto;gap:18px}
+.meal .thumb{width:150px;border-radius:10px}
+.meal h4{font-size:19px;font-weight:800;font-stretch:90%;margin:2px 0 4px}
+.open-hint{font-size:13px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:5px 12px}
+.meal[open] .open-hint{background:var(--accent);color:var(--accent-ink)}
+.meal-body{padding:4px 0 24px;gap:28px;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.meal-hero{border-radius:12px}
+.ing h5,.method h5{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin:18px 0 8px}
+.method h5{margin-top:0}
+.ing ul{background:var(--bg);border-radius:10px;padding:4px 14px}
+.ing li{border-bottom:1px solid var(--line);padding:8px 0;grid-template-columns:minmax(100px,auto) 1fr}
+.ing li:last-child{border-bottom:0}
+.ing li b{color:var(--accent)}
+.method ol{padding-left:0;list-style:none;counter-reset:s;gap:12px;font-size:15px}
+.method ol li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.method ol li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:grid;place-items:center}
+.tipline{background:var(--sun-soft);border-radius:10px;padding:10px 14px;margin-top:16px}
+
+.totals{grid-template-columns:minmax(220px,300px) 1fr;gap:28px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.bigtotal{background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:22px}
+.bigtotal .amt{font-family:Archivo,sans-serif;font-size:56px;font-weight:800;font-stretch:85%}
+.track{height:8px;background:var(--sunk);border-radius:4px}
+.fill{background:var(--accent);border-radius:4px}
+.bar{font-size:14px;font-weight:500}
+.cols.two{gap:24px}
+.col-head{border-bottom:0;padding:16px 18px;background:var(--accent);color:var(--accent-ink);border-radius:12px}
+.col-head h3{font-size:22px;font-weight:800;font-stretch:85%}
+.col-head .sub{color:var(--accent-ink);opacity:.8;margin-top:2px}
+.col-head .num{font-family:Archivo,sans-serif;font-size:28px;font-weight:800;font-stretch:85%}
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.sec-head{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--sunk)}
+.sec-head h4{font-family:Archivo,sans-serif;font-size:17px;font-weight:800;font-stretch:90%}
+.item{padding:11px 16px}
+.item input{accent-color:var(--accent)}
+.tip{border-left:3px solid var(--accent);border-top:0;padding:6px 0 6px 14px;background:none}
+.tip strong{font-size:15px}
+.notes{gap:18px}
+footer{border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:760px){
+  .glance{grid-template-columns:repeat(2,1fr)}
+  .meal > summary{grid-template-columns:100px 1fr}
+  .meal .thumb{width:100px}
+  .meal-body{grid-template-columns:1fr}
+  .totals{grid-template-columns:1fr}
+}
+@media (max-width:440px){.glance{grid-template-columns:1fr}.day > summary,.day-body{padding-inline:14px}}
+</style>
+</head>
+<body>
+<div class="page-bg">
+
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">North Stradbroke Island · Saturday to Tuesday</span>
+    <h1>Straddie camp food</h1>
+    <p class="lede">Everything we're eating, how to cook it, and what to buy.</p>
+    <div class="facts"><span class="fact"><b>6 people</b> Sat to Mon</span><span class="fact"><b>3 people</b> Mon arvo to Tue</span><span class="fact"><b>9 meals</b> + snacks</span><span class="fact"><b id="factTotal"></b> total</span></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-meals" aria-controls="meals" aria-selected="true">Meals &amp; recipes</button>
+    <button class="tab" role="tab" id="tab-shop" aria-controls="shop" aria-selected="false">Shopping list</button>
+  </nav>
+
+  <section class="panel" id="meals" role="tabpanel" aria-labelledby="tab-meals">
+    <div class="glance" id="glance"></div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <section class="panel" id="shop" role="tabpanel" aria-labelledby="tab-shop" hidden>
+    <div class="totals">
+      <div class="bigtotal">
+        <div class="eyebrow" style="color:inherit;opacity:.8">Estimated total</div>
+        <div class="amt num" id="grand"></div>
+        <p id="split"></p>
+      </div>
+      <div class="bars" id="bars"></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="seg" role="group" aria-label="List view">
+        <button type="button" id="v-full" aria-pressed="true">Full list</button>
+        <button type="button" id="v-split" aria-pressed="false">Split for 2 shoppers</button>
+      </div>
+      <div class="actions">
+        <span class="progress num" id="progress"></span>
+        <button id="copy" type="button">Copy list</button>
+        <button id="reset" type="button">Clear ticks</button>
+      </div>
+    </div>
+    <div class="cols" id="cols"></div>
+
+    <h2>Before you go</h2>
+    <div class="notes">
+      <div class="tip"><strong>Shop on the mainland</strong><p>Do the big shop in Cleveland before the ferry. The island shops have less range and cost more. Grab the 2 hot chickens last.</p></div>
+      <div class="tip"><strong>Freeze the burger mince</strong><p>Burgers are Monday night, 2½ days after the shop. Freeze the 1 kg of burger mince flat in a zip-lock bag. It thaws slowly in the esky and keeps everything else cold.</p></div>
+      <div class="tip"><strong>Prep at home</strong><p>Dice the ragu veg into a zip-lock bag, and make the chimichurri the night before and bring it in a jar. It tastes better after a day.</p></div>
+      <div class="tip"><strong>Esky order</strong><p>Eat in order of freshness: burrata Saturday, chicken Sunday lunch, steak Sunday night, roast beef and burgers Monday. Top up ice on the island.</p></div>
+    </div>
+    <footer>Prices checked against Coles and Woolworths shelf prices from price-tracking sites (Grocerize, Cuugo, BuyWisely, DollarProtein) in September 2026. Items marked <em>est.</em> had no tracked price and are estimates. Specials change weekly, so the real total is often lower. Cross off anything you already have (oil, sauces, coffee) to cut the cost.</footer>
+  </section>
+</div>
+
+<script>
+const DATA = [{"sec": "Fruit & veg", "items": [{"n": "Truss tomatoes", "q": "2 kg (about 13)", "f": "Burrata baguette, chicken sandwich, fry-up, roast beef, burgers", "p": 13.8, "note": "", "src": "v", "g": 1}, {"n": "Cherry tomatoes", "q": "2 × 250 g punnets", "f": "Steak salad", "p": 6.8, "note": "", "src": "v", "g": 1}, {"n": "Baby rocket", "q": "3 × 120 g bags", "f": "Burrata baguette, chicken sandwich, roast beef", "p": 9.9, "note": "", "src": "v", "g": 1}, {"n": "Mixed salad leaves", "q": "2 × 120 g bags", "f": "Steak salad", "p": 7.0, "note": "", "src": "e", "g": 1}, {"n": "Iceberg lettuce", "q": "1", "f": "Burgers", "p": 3.5, "note": "", "src": "e", "g": 1}, {"n": "Hass avocados", "q": "2 × 5-packs", "f": "Wraps, chicken sandwich, steak salad", "p": 17.8, "note": "Get one firm pack so it's ripe by Sunday night", "src": "v", "g": 1}, {"n": "Lebanese cucumbers", "q": "2", "f": "Steak salad", "p": 3.0, "note": "", "src": "e", "g": 1}, {"n": "Cup mushrooms", "q": "500 g", "f": "Fry-up", "p": 7.0, "note": "", "src": "v", "g": 1}, {"n": "Red onions", "q": "3", "f": "Steak salad, burgers", "p": 2.5, "note": "", "src": "e", "g": 1}, {"n": "Brown onions", "q": "2", "f": "Ragu", "p": 1.5, "note": "", "src": "e", "g": 1}, {"n": "Carrots", "q": "2", "f": "Ragu", "p": 1.0, "note": "", "src": "e", "g": 1}, {"n": "Celery", "q": "½ bunch", "f": "Ragu", "p": 3.0, "note": "", "src": "e", "g": 1}, {"n": "Garlic", "q": "2 bulbs", "f": "Ragu, chimichurri", "p": 3.0, "note": "", "src": "e", "g": 1}, {"n": "Parsley (flat-leaf)", "q": "2 bunches", "f": "Chimichurri", "p": 6.6, "note": "", "src": "v", "g": 1}, {"n": "Red chilli", "q": "1–2", "f": "Chimichurri", "p": 1.0, "note": "", "src": "e", "g": 1}, {"n": "Pineapples", "q": "2", "f": "Snacking, yoghurt bowls", "p": 9.0, "note": "", "src": "e", "g": 1}, {"n": "Mandarins (Afourer or Murcott)", "q": "1.5 kg", "f": "Snacking", "p": 9.0, "note": "Imperials are finished by now", "src": "e", "g": 1}, {"n": "Lychees in syrup", "q": "2 × 565 g tins", "f": "Snacking, yoghurt bowls", "p": 7.0, "note": "Fresh lychees usually arrive from about November", "src": "e", "g": 1}]}, {"sec": "Meat & deli", "items": [{"n": "Prosciutto", "q": "3 × 100 g packs", "f": "Burrata baguette", "p": 18.0, "note": "", "src": "v", "g": 1}, {"n": "Burrata", "q": "3 × 150 g", "f": "Burrata baguette", "p": 19.5, "note": "", "src": "v", "g": 1}, {"n": "Beef mince (3-star)", "q": "1.5 kg", "f": "Ragu", "p": 22.5, "note": "", "src": "v", "g": 1}, {"n": "Beef mince (3-star)", "q": "1 kg", "f": "Burgers (6 patties)", "p": 14.5, "note": "Freeze it before you leave", "src": "v", "g": 1}, {"n": "Rump steak", "q": "1.6 kg", "f": "Steak salad", "p": 48.0, "note": "About $30/kg in bulk packs", "src": "v", "g": 1}, {"n": "Hot roast chickens", "q": "2", "f": "Chicken sandwich", "p": 26.0, "note": "Buy these last", "src": "v", "g": 1}, {"n": "Roast beef, deli-sliced", "q": "300 g", "f": "Roast beef sandwich", "p": 11.4, "note": "", "src": "v", "g": 1}, {"n": "Middle bacon", "q": "2 × 1 kg", "f": "Wraps, fry-up", "p": 24.0, "note": "", "src": "v", "g": 1}, {"n": "Free-range eggs", "q": "3 dozen", "f": "Wraps, fry-up", "p": 20.1, "note": "", "src": "v", "g": 1}]}, {"sec": "Dairy & chilled", "items": [{"n": "Parmigiano Reggiano", "q": "250 g", "f": "Ragu", "p": 12.7, "note": "", "src": "v", "g": 1}, {"n": "Tasty cheese, grated", "q": "500 g", "f": "Wraps", "p": 8.3, "note": "", "src": "v", "g": 2}, {"n": "Swiss cheese slices", "q": "2 × 200 g", "f": "Chicken & roast beef sandwiches", "p": 10.7, "note": "", "src": "v", "g": 2}, {"n": "Burger cheese slices", "q": "1 pack", "f": "Burgers", "p": 4.5, "note": "", "src": "e", "g": 1}, {"n": "Butter", "q": "250 g", "f": "Toast, cooking", "p": 4.8, "note": "", "src": "v", "g": 2}, {"n": "Jalna Greek yoghurt", "q": "1 kg", "f": "Yoghurt bowls", "p": 7.2, "note": "", "src": "v", "g": 1}, {"n": "Milk", "q": "2 × 2 L", "f": "Coffee and tea, Sat to Mon", "p": 6.8, "note": "", "src": "v", "g": 1}, {"n": "Long-life milk", "q": "1 L", "f": "Tuesday coffee", "p": 2.0, "note": "", "src": "e", "g": 2}, {"n": "Orange juice", "q": "2 L", "f": "Breakfasts", "p": 5.5, "note": "", "src": "e", "g": 2}, {"n": "Frozen hash browns", "q": "2 × 1 kg", "f": "Wraps, fry-up", "p": 10.8, "note": "", "src": "v", "g": 1}]}, {"sec": "Bread", "items": [{"n": "Baguettes", "q": "3", "f": "Burrata baguette", "p": 10.5, "note": "", "src": "e", "g": 2}, {"n": "Turkish bread", "q": "2 loaves", "f": "Chicken sandwich", "p": 9.0, "note": "", "src": "e", "g": 2}, {"n": "Crusty rolls", "q": "6 pack", "f": "Roast beef sandwich", "p": 4.5, "note": "", "src": "e", "g": 2}, {"n": "Mission wraps", "q": "2 × 8 pack", "f": "Sunday breakfast", "p": 10.0, "note": "", "src": "e", "g": 2}, {"n": "Sourdough loaf", "q": "1", "f": "Fry-up toast", "p": 5.5, "note": "", "src": "e", "g": 2}, {"n": "Brioche burger buns", "q": "2 × 4 pack", "f": "Burgers", "p": 10.0, "note": "", "src": "e", "g": 2}]}, {"sec": "Pantry & sauces", "items": [{"n": "Rigatoni (San Remo or Barilla)", "q": "2 × 500 g", "f": "Ragu", "p": 5.9, "note": "", "src": "v", "g": 2}, {"n": "Crushed tomatoes", "q": "3 × 400 g tins", "f": "Ragu", "p": 3.9, "note": "", "src": "v", "g": 2}, {"n": "Tomato paste", "q": "1 tube", "f": "Ragu", "p": 1.5, "note": "", "src": "e", "g": 2}, {"n": "Beef stock cubes", "q": "1 pack", "f": "Ragu", "p": 2.5, "note": "", "src": "e", "g": 2}, {"n": "Red wine", "q": "1 bottle", "f": "Ragu (1 cup), drink the rest", "p": 12.0, "note": "From BWS, Liquorland or Dan Murphy's", "src": "e", "g": 2}, {"n": "Sacla basil pesto", "q": "2 × 190 g", "f": "Burrata baguette, pesto mayo", "p": 9.4, "note": "", "src": "v", "g": 2}, {"n": "Balsamic glaze", "q": "250 ml bottle", "f": "Burrata baguette drizzle", "p": 5.0, "note": "", "src": "e", "g": 2}, {"n": "Whole-egg mayo", "q": "440 g", "f": "Pesto mayo, burgers", "p": 6.0, "note": "", "src": "v", "g": 2}, {"n": "Horseradish cream", "q": "1 jar", "f": "Roast beef sandwich", "p": 4.5, "note": "", "src": "e", "g": 2}, {"n": "Dill pickles", "q": "1 jar", "f": "Roast beef, burgers", "p": 4.5, "note": "", "src": "e", "g": 2}, {"n": "Beetroot slices", "q": "1 × 450 g tin", "f": "Burgers", "p": 2.5, "note": "", "src": "e", "g": 2}, {"n": "Tomato sauce + BBQ sauce", "q": "1 each", "f": "Breakfasts, burgers", "p": 7.0, "note": "", "src": "e", "g": 2}, {"n": "Chilli jam", "q": "1 jar", "f": "Sunday wraps", "p": 5.0, "note": "", "src": "e", "g": 2}, {"n": "Red wine vinegar", "q": "1 bottle", "f": "Chimichurri", "p": 3.0, "note": "", "src": "e", "g": 2}, {"n": "Dried oregano", "q": "1 jar", "f": "Chimichurri, ragu", "p": 3.0, "note": "", "src": "e", "g": 2}, {"n": "Chilli flakes", "q": "1 jar", "f": "Chimichurri", "p": 3.0, "note": "", "src": "e", "g": 2}, {"n": "Extra virgin olive oil", "q": "750 ml", "f": "Everything", "p": 20.0, "note": "", "src": "v", "g": 2}, {"n": "Salt & pepper grinders", "q": "1 set", "f": "Everything", "p": 7.0, "note": "", "src": "e", "g": 2}, {"n": "Granola", "q": "500 g", "f": "Yoghurt bowls", "p": 6.5, "note": "", "src": "e", "g": 2}, {"n": "Honey", "q": "500 g", "f": "Yoghurt bowls", "p": 7.0, "note": "", "src": "e", "g": 2}, {"n": "Coffee", "q": "1 jar or 20 bags", "f": "Mornings", "p": 12.0, "note": "", "src": "e", "g": 2}, {"n": "Tea bags", "q": "50 pack", "f": "Mornings", "p": 4.0, "note": "", "src": "e", "g": 2}, {"n": "Sugar", "q": "1 kg", "f": "Coffee and tea", "p": 2.0, "note": "", "src": "e", "g": 2}]}, {"sec": "Snacks", "items": [{"n": "Truffle chips (Red Rock Deli Salt & Truffle)", "q": "1 × 150 g", "f": "Crunch in the burrata baguettes", "p": 6.0, "note": "Often half price", "src": "e", "g": 2}, {"n": "Coles Crinkle Cut multipack", "q": "20 × 19 g bags", "f": "Beach and day trips", "p": 5.75, "note": "", "src": "v", "g": 2}, {"n": "Store-brand chips", "q": "6 × 175 g share bags", "f": "Around camp, chips and dip", "p": 12.0, "note": "", "src": "v", "g": 2}, {"n": "Store-brand corn chips", "q": "2 × 200 g", "f": "Scooping dips", "p": 5.0, "note": "", "src": "e", "g": 2}, {"n": "Jatz crackers", "q": "2 × 225 g", "f": "With dips", "p": 8.0, "note": "Often 2 for $6", "src": "v", "g": 2}, {"n": "Dips (French onion, sweet chilli, hummus, cob loaf style)", "q": "4 × 200 g", "f": "Chips and dip", "p": 10.0, "note": "Coles Simply range is about $2.50 each", "src": "v", "g": 2}, {"n": "Uncle Tobys muesli bars", "q": "2 × 6 pack", "f": "Grab-and-go", "p": 11.0, "note": "Often half price", "src": "v", "g": 2}, {"n": "Store-brand lollies", "q": "2 × 1 kg bags", "f": "Treats", "p": 16.0, "note": "Get two different mixes", "src": "e", "g": 2}, {"n": "Tim Tams", "q": "2 × 200 g", "f": "Treats", "p": 12.0, "note": "Often 2 for $8", "src": "v", "g": 2}, {"n": "Marshmallows", "q": "1 bag", "f": "Toasting at night", "p": 3.0, "note": "", "src": "e", "g": 2}]}, {"sec": "Drinks", "items": [{"n": "Pepsi Max", "q": "30 × 375 ml cans", "f": "", "p": 29.5, "note": "Specials bring it to about $22–26", "src": "v", "g": 2}, {"n": "Spring water", "q": "24 × 600 ml", "f": "Beach and day trips", "p": 8.0, "note": "", "src": "v", "g": 2}, {"n": "Water casks", "q": "2 × 10 L", "f": "Drinking, cooking, coffee", "p": 9.0, "note": "", "src": "e", "g": 2}]}, {"sec": "Ice & camp kitchen", "items": [{"n": "Ice", "q": "4 × 5 kg bags", "f": "Eskies", "p": 20.0, "note": "Top up on the island", "src": "e", "g": 1}, {"n": "Foil, zip-lock bags, paper towel, bin bags", "q": "1 of each", "f": "Storage and clean-up", "p": 20.0, "note": "", "src": "e", "g": 2}]}];
+
+/* ---------- illustrations ---------- */
+function rng(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return (s-1)/2147483646;}}
+const W=320,H=200;
+function frame(inner,bg="#E3D8C4",stripe="#D6C9B1"){
+  let st="";for(let x=-200;x<W;x+=34)st+=`<path d="M${x} ${H} L${x+200} 0" stroke="${stripe}" stroke-width="10" opacity=".5"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img"><rect width="${W}" height="${H}" fill="${bg}"/>${st}${inner}</svg>`;
+}
+const plate=(cx,cy,r)=>`<circle cx="${cx}" cy="${cy+4}" r="${r}" fill="#000" opacity=".12"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="#FBFAF6"/><circle cx="${cx}" cy="${cy}" r="${r*0.82}" fill="none" stroke="#ECE8DF" stroke-width="2"/>`;
+const leaf=(x,y,rx,ry,rot,c)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${x} ${y})" fill="${c}"/>`;
+const tomSlice=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#C8321F"/><circle cx="${x}" cy="${y}" r="${r*.78}" fill="#E4553B"/><circle cx="${x-r*.3}" cy="${y-r*.2}" r="${r*.18}" fill="#F4C27A"/><circle cx="${x+r*.3}" cy="${y+r*.15}" r="${r*.18}" fill="#F4C27A"/><circle cx="${x}" cy="${y+r*.4}" r="${r*.15}" fill="#F4C27A"/>`;
+const egg=(x,y,s)=>`<path d="M${x-26*s} ${y} C${x-30*s} ${y-22*s} ${x-4*s} ${y-30*s} ${x+14*s} ${y-22*s} C${x+34*s} ${y-14*s} ${x+30*s} ${y+18*s} ${x+8*s} ${y+22*s} C${x-12*s} ${y+26*s} ${x-24*s} ${y+16*s} ${x-26*s} ${y}Z" fill="#FFFFFF" stroke="#EFE9DC"/><circle cx="${x+2*s}" cy="${y}" r="${10*s}" fill="#F3A81C"/><circle cx="${x-1*s}" cy="${y-3*s}" r="${3*s}" fill="#FFD86A"/>`;
+const bacon=(x,y,len,rot)=>`<g transform="rotate(${rot} ${x} ${y})"><path d="M${x} ${y} q${len/6} -8 ${len/3} 0 t${len/3} 0 t${len/3} 0" stroke="#A8382C" stroke-width="13" fill="none" stroke-linecap="round"/><path d="M${x} ${y+1} q${len/6} -8 ${len/3} 0 t${len/3} 0 t${len/3} 0" stroke="#F2C7B4" stroke-width="3" fill="none" stroke-linecap="round"/></g>`;
+
+const ILL={
+ burrata(){let r=rng(3),s="";
+  s+=`<rect x="30" y="34" width="260" height="138" rx="12" fill="#000" opacity=".12"/><rect x="28" y="28" width="260" height="138" rx="12" fill="#B7834F"/><path d="M40 60 H276 M40 100 H276 M40 140 H276" stroke="#A7743F" stroke-width="2"/>`;
+  s+=`<rect x="48" y="84" width="176" height="48" rx="24" fill="#8E5A26"/><rect x="48" y="78" width="176" height="46" rx="23" fill="#D9974A"/>`;
+  for(let i=0;i<5;i++)s+=`<path d="M${70+i*30} 90 l16 -8" stroke="#F3CD8E" stroke-width="5" stroke-linecap="round"/>`;
+  for(let i=0;i<9;i++)s+=leaf(56+i*19,128+r()*4,10,5,r()*60-30,i%2?"#4C8A34":"#5E9E3F");
+  s+=`<path d="M60 124 q20 10 40 0 q20 10 40 0 q20 10 40 0 q20 10 40 0" stroke="#D98C86" stroke-width="7" fill="none"/>`;
+  [[70,76,-20],[96,72,15],[128,74,-8],[160,71,22],[192,75,-15]].forEach(([x,y,r])=>s+=`<ellipse cx="${x}" cy="${y}" rx="11" ry="7" transform="rotate(${r} ${x} ${y})" fill="#EDC56A" stroke="#C99A3A" stroke-width="1.2"/>`);
+  s+=tomSlice(248,62,17)+tomSlice(262,98,14);
+  s+=`<circle cx="236" cy="136" r="24" fill="#F7F3E8"/><path d="M220 132 q14 -12 30 -2" stroke="#E6DFCD" stroke-width="3" fill="none"/><circle cx="236" cy="136" r="24" fill="none" stroke="#E9E1CF" stroke-width="2"/>`;
+  s+=`<path d="M62 90 l18 22 l14 -24 l16 26 l14 -26 l16 24 l14 -22 l16 24 l14 -22 l14 22" stroke="#3A1E1A" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/><path d="M220 124 l10 16 l10 -14 l10 14" stroke="#3A1E1A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".85"/>`;
+  s+=`<circle cx="74" cy="52" r="13" fill="#5F7F24"/><circle cx="74" cy="52" r="9" fill="#7FA03A"/>`;
+  return frame(s);},
+ ragu(){let r=rng(7),s=plate(160,100,86);
+  s+=`<circle cx="160" cy="100" r="62" fill="#9C3B24"/><circle cx="150" cy="92" r="40" fill="#B24A2C" opacity=".6"/>`;
+  for(let i=0;i<26;i++){const a=r()*6.28,d=r()*52,x=160+Math.cos(a)*d,y=100+Math.sin(a)*d,rot=r()*180;
+   s+=`<g transform="rotate(${rot} ${x} ${y})"><rect x="${x-13}" y="${y-6}" width="26" height="12" rx="3" fill="#E9B460"/><ellipse cx="${x+13}" cy="${y}" rx="3" ry="6" fill="#B57A2E"/><path d="M${x-9} ${y-6} v12 M${x-3} ${y-6} v12 M${x+3} ${y-6} v12" stroke="#D59C45" stroke-width="1.2"/></g>`;}
+  for(let i=0;i<14;i++){const x=120+r()*80,y=66+r()*70;s+=`<rect x="${x}" y="${y}" width="${6+r()*6}" height="3" rx="1" fill="#F6EDCF" transform="rotate(${r()*90} ${x} ${y})"/>`;}
+  s+=leaf(186,76,11,6,-30,"#3F8A3A")+leaf(196,86,9,5,20,"#4E9A45");
+  return frame(s,"#D6D7C7","#C8CAB6");},
+ wraps(){let s="";
+  s+=`<rect x="30" y="118" width="130" height="58" rx="29" fill="#000" opacity=".1"/>`;
+  const roll=(x,y,r)=>`<circle cx="${x}" cy="${y+4}" r="${r}" fill="#000" opacity=".12"/><circle cx="${x}" cy="${y}" r="${r}" fill="#EFD9A7"/><circle cx="${x}" cy="${y}" r="${r-7}" fill="#F7E7C0"/><circle cx="${x}" cy="${y}" r="${r-9}" fill="#F4C33E"/><path d="M${x-r+12} ${y-4} q${r/2} -14 ${r*1.1} -4" stroke="#A8382C" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M${x-r+14} ${y+10} q${r/2} 8 ${r} 0" stroke="#8DB255" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="${x+8}" cy="${y+2}" r="6" fill="#D9A441"/><circle cx="${x-10}" cy="${y+22}" r="5" fill="#F6D67A"/>`;
+  s+=roll(98,96,50)+roll(206,90,46);
+  s+=`<circle cx="270" cy="160" r="20" fill="#FBFAF6"/><circle cx="270" cy="160" r="14" fill="#C2331F"/><circle cx="265" cy="156" r="4" fill="#E8674A"/>`;
+  s+=`<ellipse cx="60" cy="168" rx="20" ry="13" fill="#6E8F3A"/><ellipse cx="60" cy="168" rx="15" ry="9" fill="#C9DC86"/><circle cx="62" cy="168" r="5" fill="#8A5A2E"/>`;
+  return frame(s);},
+ chicken(){let r=rng(11),s="";
+  const sand=(x,y,w)=>{let o=`<rect x="${x+3}" y="${y+6}" width="${w}" height="82" rx="14" fill="#000" opacity=".12"/><rect x="${x}" y="${y}" width="${w}" height="30" rx="12" fill="#D8A15B"/>`;
+   for(let i=0;i<10;i++)o+=`<ellipse cx="${x+10+r()*(w-20)}" cy="${y+6+r()*18}" rx="2.4" ry="1.3" fill="#F7E6BC" transform="rotate(${r()*90} ${x+10} ${y+10})"/>`;
+   o+=`<path d="M${x+2} ${y+34} q${w/8} 10 ${w/4} 0 t${w/4} 0 t${w/4} 0 t${w/4} 0" stroke="#5E9E3F" stroke-width="9" fill="none"/>`;
+   o+=`<rect x="${x+4}" y="${y+36}" width="${w-8}" height="10" rx="4" fill="#D8412A"/><rect x="${x+2}" y="${y+44}" width="${w-4}" height="12" rx="5" fill="#EFD8AE"/><rect x="${x+6}" y="${y+54}" width="${w-12}" height="6" rx="3" fill="#F2E09A"/><rect x="${x}" y="${y+58}" width="${w}" height="24" rx="10" fill="#C98E4A"/>`;return o;};
+  s+=sand(34,52,130)+sand(176,62,110);
+  s+=`<ellipse cx="258" cy="40" rx="30" ry="14" fill="#FBFAF6"/><ellipse cx="258" cy="40" rx="22" ry="9" fill="#9DB45A"/>`;
+  return frame(s,"#D6D7C7","#C8CAB6");},
+ steak(){let r=rng(5),s=plate(160,100,90);
+  for(let i=0;i<30;i++){const a=r()*6.28,d=r()*70;s+=leaf(160+Math.cos(a)*d,100+Math.sin(a)*d,12,7,r()*180,["#4C8A34","#6FAE45","#8CC152","#3E7B2E"][i%4]);}
+  for(let i=0;i<6;i++){const x=106+i*18,y=86+i*3;s+=`<g transform="rotate(-18 ${x} ${y})"><rect x="${x}" y="${y}" width="16" height="44" rx="4" fill="#5C2E20"/><rect x="${x+3}" y="${y+4}" width="10" height="36" rx="3" fill="#C45F55"/></g>`;}
+  for(let i=0;i<24;i++)s+=`<circle cx="${110+r()*110}" cy="${86+r()*44}" r="${1.5+r()*2}" fill="#2F6B25"/>`;
+  [[200,60],[222,120],[92,132],[110,62]].forEach(([x,y])=>s+=`<circle cx="${x}" cy="${y}" r="9" fill="#D2331F"/><circle cx="${x-2}" cy="${y-2}" r="3" fill="#F08A6E"/>`);
+  s+=`<path d="M214 88 a18 18 0 0 1 20 22" stroke="#A7C66B" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M88 96 a14 14 0 0 1 10 -18" stroke="#9B4A8C" stroke-width="3" fill="none"/>`;
+  return frame(s);},
+ fryup(){let r=rng(9),s=plate(160,100,90);
+  s+=egg(128,76,1)+egg(176,70,.95);
+  s+=bacon(186,108,54,-10)+bacon(184,126,54,-6);
+  s+=`<rect x="100" y="108" width="36" height="24" rx="8" fill="#D39A34"/><rect x="104" y="112" width="28" height="4" rx="2" fill="#E9BE62"/><rect x="104" y="136" width="36" height="22" rx="8" fill="#C98C2C"/>`;
+  s+=tomSlice(222,74,14);
+  [[150,146],[166,154],[140,160]].forEach(([x,y])=>s+=`<circle cx="${x}" cy="${y}" r="9" fill="#7D5F48"/><path d="M${x-5} ${y} h10" stroke="#C8AE93" stroke-width="2"/>`);
+  s+=`<rect x="238" y="118" width="52" height="56" rx="8" fill="#B47A3C" transform="rotate(12 264 146)"/><rect x="244" y="124" width="40" height="44" rx="5" fill="#E7C386" transform="rotate(12 264 146)"/>`;
+  return frame(s,"#D6D7C7","#C8CAB6");},
+ roastbeef(){let s="";
+  const roll=(x,y,w)=>`<ellipse cx="${x+w/2+3}" cy="${y+50}" rx="${w/2}" ry="18" fill="#000" opacity=".12"/><path d="M${x} ${y+30} q${w/2} -44 ${w} 0 z" fill="#C4843F"/><path d="M${x+14} ${y+10} l14 -6 M${x+w/2} ${y} l14 -2" stroke="#E1AE6A" stroke-width="4" stroke-linecap="round"/><path d="M${x} ${y+34} q${w/6} 10 ${w/3} 0 t${w/3} 0 t${w/3} 0" stroke="#9A4540" stroke-width="10" fill="none"/><path d="M${x+2} ${y+42} q${w/6} 8 ${w/3} 0 t${w/3} 0 t${w/3} 0" stroke="#C57670" stroke-width="7" fill="none"/><rect x="${x+2}" y="${y+46}" width="${w-4}" height="6" rx="3" fill="#F2E09A"/><path d="M${x+2} ${y+54} q${w/8} 7 ${w/4} 0 t${w/4} 0 t${w/4} 0 t${w/4} 0" stroke="#5E9E3F" stroke-width="7" fill="none"/><rect x="${x}" y="${y+58}" width="${w}" height="18" rx="9" fill="#B77738"/>`;
+  s+=roll(40,70,130)+roll(186,84,100);
+  [[250,48],[272,58],[258,68]].forEach(([x,y])=>s+=`<circle cx="${x}" cy="${y}" r="9" fill="#5E7F2A"/><circle cx="${x}" cy="${y}" r="6" fill="#A9C26A"/>`);
+  s+=`<circle cx="70" cy="40" r="16" fill="#FBFAF6"/><circle cx="70" cy="40" r="11" fill="#EEE6CF"/>`;
+  return frame(s);},
+ burger(){let s="";const x=160;
+  s+=`<ellipse cx="${x}" cy="176" rx="96" ry="12" fill="#000" opacity=".14"/>`;
+  s+=`<rect x="${x-78}" y="146" width="156" height="26" rx="12" fill="#C47F35"/>`;
+  s+=`<path d="M${x-82} 146 q20 -10 40 0 t40 0 t40 0 t40 0 v-8 h-160z" fill="#7DB24A"/>`;
+  s+=`<rect x="${x-80}" y="124" width="160" height="16" rx="6" fill="#7A2346"/>`;
+  s+=`<rect x="${x-84}" y="100" width="168" height="26" rx="12" fill="#4F2C20"/><path d="M${x-80} 104 h160" stroke="#6B3B2A" stroke-width="3"/>`;
+  s+=`<path d="M${x-86} 98 h172 l-14 14 l-10 -6 l-12 16 l-10 -12 l-18 8 l-14 -10 l-12 14 l-16 -10 l-12 10 l-14 -14 l-12 8 l-10 -8z" fill="#F2B632"/>`;
+  s+=`<path d="M${x-80} 92 q20 -8 40 0 t40 0 t40 0 t40 0" stroke="#A8382C" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  s+=`<path d="M${x-84} 88 q0 -64 84 -66 q84 2 84 66 z" fill="#D8903D"/><path d="M${x-60} 58 q30 -26 70 -24" stroke="#E9B06A" stroke-width="8" fill="none" stroke-linecap="round" opacity=".7"/>`;
+  [[-40,50],[-14,40],[14,38],[40,48],[-26,64],[4,58],[30,64],[56,64]].forEach(([dx,y])=>s+=`<ellipse cx="${x+dx}" cy="${y}" rx="3.2" ry="1.8" fill="#F7E6BC" transform="rotate(${dx} ${x+dx} ${y})"/>`);
+  s+=`<circle cx="270" cy="60" r="18" fill="#7A2346"/><circle cx="270" cy="60" r="12" fill="none" stroke="#A33B66" stroke-width="2"/>`;
+  return frame(s,"#D6D7C7","#C8CAB6");},
+ yoghurt(){let r=rng(13),s=plate(160,100,88);
+  s+=`<circle cx="160" cy="100" r="70" fill="#F5F2EA"/><circle cx="148" cy="92" r="40" fill="#FFFFFF" opacity=".7"/>`;
+  for(let i=0;i<7;i++){const x=110+r()*40,y=70+r()*50;s+=`<rect x="${x}" y="${y}" width="14" height="14" rx="3" fill="#F5C63C" transform="rotate(${r()*40} ${x} ${y})"/>`;}
+  [[196,76],[206,100],[188,98],[200,124]].forEach(([x,y])=>s+=`<circle cx="${x}" cy="${y}" r="10" fill="#F4EDE0" stroke="#E2D6C2" stroke-width="2"/><circle cx="${x+2}" cy="${y-2}" r="3" fill="#FFFFFF"/>`);
+  for(let i=0;i<5;i++){const a=-0.9+i*0.35;const x=160+Math.cos(a+1.4)*44,y=100+Math.sin(a+1.4)*44;s+=`<ellipse cx="${x}" cy="${y}" rx="11" ry="6" fill="#F28C28" transform="rotate(${(a+1.4)*57+90} ${x} ${y})"/>`;}
+  for(let i=0;i<40;i++){const a=r()*6.28,d=r()*22;s+=`<circle cx="${160+Math.cos(a)*d}" cy="${100+Math.sin(a)*d}" r="${1.5+r()*2.5}" fill="${i%3?"#B07A3C":"#D6A45E"}"/>`;}
+  s+=`<path d="M122 60 q30 20 20 44 t40 30" stroke="#E0A11C" stroke-width="3" fill="none" opacity=".85"/>`;
+  return frame(s);}
+};
+
+/* ---------- meals ---------- */
+const DAYS=[
+ {day:"Saturday",pax:6,note:"Arrive in the morning",meals:[
+  {slot:"Lunch",name:"Burrata, prosciutto & pesto baguette",ill:"burrata",time:"15 min",cook:"No cooking",
+   ing:[["3","baguettes"],["3 × 150 g","burrata"],["300 g","prosciutto"],["4","tomatoes, sliced"],["1 bag (120 g)","baby rocket"],["½ jar (95 g)","basil pesto"],["2–3 tbsp","balsamic glaze"],["1 bag (150 g)","truffle chips"],["","olive oil, salt, pepper"]],
+   steps:["Split each baguette lengthways, leaving one side joined like a hinge.","Spread pesto on both cut sides.","Layer rocket, then tomato slices. Salt the tomato.","Fold the prosciutto on in loose ribbons.","Tear the burrata over the top. Drizzle with olive oil and zig-zag the balsamic glaze over everything, then crack on pepper.","Just before serving, scatter a handful of truffle chips along each baguette so they stay crunchy.","Close, press down, and cut each baguette in half to make 6 portions."],
+   tip:"Keep the burrata in the coldest part of the esky and eat it on day one."},
+  {slot:"Dinner",name:"Beef ragu with rigatoni",ill:"ragu",time:"1 hr 15",cook:"Big pot on the gas burner",
+   ing:[["1.5 kg","beef mince"],["2","brown onions, diced"],["2","carrots, diced"],["2 sticks","celery, diced"],["4 cloves","garlic, crushed"],["2 tbsp","tomato paste"],["1 cup","red wine"],["3 × 400 g","crushed tomatoes"],["1 + 1 cup water","beef stock cube"],["2 tsp","dried oregano"],["1 kg","rigatoni"],["100 g","parmesan, grated"],["","olive oil, salt, pepper"]],
+   steps:["Heat a splash of oil in a big pot. Cook the onion, carrot and celery for 8–10 minutes until soft.","Add the garlic for 1 minute.","Turn the heat up, add the mince and break it up. Brown for 8–10 minutes.","Stir in the tomato paste for a minute, then pour in the wine and let it bubble for 2 minutes.","Add the tomatoes, stock and oregano. Simmer with the lid half on for 40 minutes, stirring now and then. Season.","Meanwhile, boil the rigatoni in salted water for about 12 minutes. Save a cup of the pasta water.","Toss the pasta through the sauce with a splash of pasta water and serve with parmesan."],
+   tip:"Dice the veg at home and bring it in a zip-lock bag."}
+ ]},
+ {day:"Sunday",pax:6,note:"Full day on the island",meals:[
+  {slot:"Breakfast",name:"Bacon & egg wraps",ill:"wraps",time:"25 min",cook:"Hotplate",
+   ing:[["12","wraps"],["12 rashers (~600 g)","middle bacon"],["12","eggs"],["12","hash browns"],["200 g","grated tasty cheese"],["3","avocados"],["","chilli jam, butter, salt, pepper"]],
+   steps:["Start the hash browns on an oiled hotplate. They take 12–15 minutes, turning once or twice.","Cook the bacon alongside.","Whisk the eggs with salt and pepper and scramble them softly in butter.","Smash the avocado with a pinch of salt.","Warm each wrap on the hotplate for 20 seconds a side.","Fill with avo, a hash brown, egg, bacon, cheese and a spoon of chilli jam. Roll up tightly."],
+   tip:"Wrap them in foil to keep them warm while the rest cook."},
+  {slot:"Lunch",name:"Rotisserie chicken sandwiches",ill:"chicken",time:"15 min",cook:"No cooking",
+   ing:[["2","hot roast chickens, shredded"],["2 loaves","Turkish bread"],["4 tbsp + 6 tbsp","pesto + mayo (mixed)"],["1 bag (120 g)","baby rocket"],["3","tomatoes, sliced"],["3","avocados, sliced"],["12 slices","Swiss cheese"]],
+   steps:["Mix the pesto and mayo together.","Cut each Turkish loaf into 3 and split each piece open. Toast the cut sides on the hotplate if you like.","Spread with pesto mayo and add the Swiss cheese, chicken, tomato, avocado and rocket.","Season, close and cut in half."],
+   tip:"Strip the chickens on Saturday while they're warm and keep the meat in a sealed container in the esky."},
+  {slot:"Dinner",name:"Steak chimichurri salad",ill:"steak",time:"35 min",cook:"Hotplate or BBQ",
+   ing:[["1.6 kg","rump steak (about 300 g per man, 200 g per woman)"],["2 bunches","parsley, finely chopped"],["2 tsp","dried oregano"],["4 cloves","garlic, crushed"],["1","red chilli, finely chopped"],["¼ cup","red wine vinegar"],["½ cup","olive oil (chimichurri)"],["2 bags","mixed salad leaves"],["2 punnets","cherry tomatoes, halved"],["2","Lebanese cucumbers, sliced"],["1","red onion, thinly sliced"],["2","avocados, sliced"]],
+   steps:["Chimichurri: mix the parsley, oregano, garlic, chilli, vinegar, oil and ½ tsp salt. It's best made a few hours or a day ahead.","Take the steak out of the esky 20 minutes before cooking. Oil it and season well.","Cook on a very hot hotplate for 3–4 minutes a side for medium-rare (2.5 cm thick).","Rest it for 8 minutes while you pile the salad onto a big platter.","Slice the steak thinly across the grain, lay it over the salad and spoon over the chimichurri."],
+   tip:"Make the chimichurri at home on Friday night and bring it in a jar."}
+ ]},
+ {day:"Monday",pax:"6 → 3",note:"3 leave after breakfast",meals:[
+  {slot:"Breakfast · 6",name:"Big camp fry-up",ill:"fryup",time:"30 min",cook:"Hotplate",
+   ing:[["18 rashers (~900 g)","middle bacon"],["12","eggs"],["12","hash browns"],["3","tomatoes, halved"],["500 g","mushrooms, sliced"],["1 loaf","sourdough"],["","butter, BBQ & tomato sauce, orange juice"]],
+   steps:["Hash browns go on first because they take longest (12–15 minutes).","Add the bacon.","Cook the mushrooms in butter, and put the tomatoes cut side down for 4–5 minutes.","Toast the buttered sourdough on the hotplate.","Fry the eggs last and serve everything straight off the plate."],
+   tip:"Pack up the leavers' gear while the hash browns cook."},
+  {slot:"Lunch · 3",name:"Roast beef rolls",ill:"roastbeef",time:"10 min",cook:"No cooking",
+   ing:[["3–6","crusty rolls"],["300 g","deli-sliced roast beef"],["6 slices","Swiss cheese"],["2","tomatoes, sliced"],["1 bag","baby rocket"],["3 tbsp + 3 tbsp","horseradish cream + mayo"],["","dill pickles, pepper"]],
+   steps:["Mix the horseradish cream and mayo.","Split the rolls and spread both sides.","Layer the Swiss cheese, roast beef, tomato, pickles and rocket. Finish with plenty of pepper."],
+   tip:"Seeded mustard works instead of horseradish if anyone finds it too hot."},
+  {slot:"Dinner · 3",name:"Aussie burgers",ill:"burger",time:"30 min",cook:"Hotplate",
+   ing:[["1 kg","beef mince (6 patties)"],["6","brioche buns"],["6 slices","burger cheese"],["6 rashers","leftover bacon"],["3","eggs (optional)"],["¼","iceberg lettuce"],["2","tomatoes, sliced"],["½","red onion, sliced"],["6 slices","tinned beetroot, patted dry"],["","pickles, mayo, tomato & BBQ sauce"]],
+   steps:["Shape the mince into 6 patties about 1.5 cm thick. Press a dent in the middle with your thumb and season well.","Cook the bacon on a hot plate, then the patties for about 4 minutes a side. Put the cheese on after you flip them.","Fry the eggs if you're having them, and toast the buns cut side down.","Build: bun, mayo, lettuce, tomato, beetroot, patty with cheese, bacon, egg, onion, pickles and sauce."],
+   tip:"The mince goes in frozen. Move it to the top of the esky on Monday morning so it's thawed by dinner."}
+ ]},
+ {day:"Tuesday",pax:3,note:"Pack up and head home",meals:[
+  {slot:"Breakfast",name:"Greek yoghurt bowls",ill:"yoghurt",time:"5 min",cook:"No cooking",
+   ing:[["750 g","Greek yoghurt"],["1½ cups","granola"],["","honey to drizzle"],["","leftover pineapple, lychees (drained) and mandarins"]],
+   steps:["Spoon the yoghurt into bowls.","Top with chopped pineapple, lychees and mandarin segments.","Add the granola last so it stays crunchy, and drizzle with honey."],
+   tip:"No cooking and no washing up on pack-up day."}
+ ]}
+];
+
+const $=id=>document.getElementById(id);
+const ABBR={"Breakfast":"B","Lunch":"L","Dinner":"D"};
+$("glance").innerHTML=DAYS.map((d,di)=>`<button type="button" class="g-day" data-day="${di}">
+  <span class="g-top"><strong>${d.day}</strong><span class="pax ${d.pax===3?"three":""}">${d.pax} ppl</span></span>
+  <ul>${d.meals.map(m=>`<li><span>${ABBR[m.slot.split(" ")[0]]}</span>${m.name}</li>`).join("")}</ul></button>`).join("");
+const chev=`<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>`;
+$("timeline").innerHTML=DAYS.map((d,di)=>`
+ <details class="day" ${di===0?"open":""}>
+  <summary>
+   <span class="day-title"><h3>${d.day}</h3><span class="pax ${d.pax===3?"three":""}">${d.pax} people</span><span class="meta">${d.note}</span></span>
+   ${chev}
+   <span class="day-meals">${d.meals.map(m=>m.name).join(" · ")}</span>
+  </summary>
+  <div class="day-body">
+   ${d.meals.map((m,mi)=>`
+    <details class="meal" ${di===0&&mi===0?"open":""}>
+     <summary>
+      <span class="thumb" aria-hidden="true">${ILL[m.ill]()}</span>
+      <span><span class="slot">${m.slot}</span><h4>${m.name}</h4><span class="meta"><span>${m.time}</span><span>${m.cook}</span></span></span>
+      <span class="open-hint"><span class="o">Show recipe</span><span class="c">Hide recipe</span></span>
+     </summary>
+     <div class="meal-body">
+      <div>
+       <div class="meal-hero">${ILL[m.ill]()}</div>
+       <div class="ing"><h5>Ingredients</h5><ul>${m.ing.map(i=>`<li><b>${i[0]}</b><span>${i[1]}</span></li>`).join("")}</ul></div>
+      </div>
+      <div class="method"><h5>Method</h5><ol>${m.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+       <p class="tipline"><strong>Camp tip:</strong> ${m.tip}</p></div>
+     </div>
+    </details>`).join("")}
+  </div>
+ </details>`).join("");
+
+$("glance").addEventListener("click",e=>{const b=e.target.closest(".g-day");if(!b)return;const d=document.querySelectorAll(".day")[+b.dataset.day];d.open=true;d.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});});
+/* ---------- tabs ---------- */
+function showTab(which){
+  const shop=which==="shop";
+  $("tab-meals").setAttribute("aria-selected",!shop);$("tab-shop").setAttribute("aria-selected",shop);
+  $("meals").hidden=shop;$("shop").hidden=!shop;window.scrollTo(0,0);
+}
+$("tab-meals").onclick=()=>{showTab("meals");try{history.replaceState(null,"","#meals")}catch(e){}};
+$("tab-shop").onclick=()=>{showTab("shop");try{history.replaceState(null,"","#shopping")}catch(e){}};
+if(location.hash==="#shopping")showTab("shop");
+
+/* ---------- shopping ---------- */
+const moneyR=n=>"$"+Math.round(n).toLocaleString("en-AU");
+const money=n=>"$"+n.toFixed(2);
+DATA.forEach((s,si)=>s.items.forEach((it,ii)=>it.id=`i${si}_${ii}`));
+const all=DATA.flatMap(s=>s.items);
+const grand=all.reduce((a,i)=>a+i.p,0);
+$("grand").textContent=moneyR(grand);$("factTotal").textContent="~"+moneyR(grand);
+$("split").textContent=`About ${moneyR(grand/6)} each split evenly across 6.`;
+const secT=DATA.map(s=>({sec:s.sec,t:s.items.reduce((a,i)=>a+i.p,0)})).sort((a,b)=>b.t-a.t);
+const mx=secT[0].t;
+$("bars").innerHTML=secT.map(s=>`<div class="bar"><span>${s.sec}</span><div class="track"><div class="fill" style="width:${(s.t/mx*100).toFixed(1)}%"></div></div><span class="v num">${moneyR(s.t)}</span></div>`).join("");
+
+let ticked={};try{ticked=JSON.parse(localStorage.getItem("straddie-ticks2")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("straddie-ticks2",JSON.stringify(ticked))}catch(e){}};
+let view="full";
+
+function itemHTML(it){return `<div class="item ${ticked[it.id]?"checked":""}">
+  <input type="checkbox" id="${view}-${it.id}" data-id="${it.id}" ${ticked[it.id]?"checked":""}>
+  <label for="${view}-${it.id}"><span class="name">${it.n} <span class="qty">· ${it.q}</span></span>${it.f?`<span class="for">${it.f}</span>`:""}${it.note?`<span class="note">${it.note}</span>`:""}</label>
+  <span class="price num">${money(it.p)}${it.src==="e"?"<small>est.</small>":""}</span></div>`;}
+function secsHTML(filter){return DATA.map(s=>{const its=s.items.filter(filter);if(!its.length)return"";
+  return `<div class="sec"><div class="sec-head"><h4>${s.sec}</h4><span class="num">${moneyR(its.reduce((a,i)=>a+i.p,0))}</span></div>${its.map(itemHTML).join("")}</div>`}).join("");}
+const GROUPS=[{g:1,title:"Shopper 1",sub:"Fresh & cold: fruit and veg, meat, deli, milk, yoghurt, ice"},{g:2,title:"Shopper 2",sub:"Bread, cheese, pantry, snacks, drinks, camp supplies"}];
+function render(){
+  const cols=$("cols");
+  if(view==="full"){cols.className="cols";cols.innerHTML=`<div class="col">${secsHTML(()=>true)}</div>`;}
+  else{cols.className="cols two";cols.innerHTML=GROUPS.map(G=>{const t=all.filter(i=>i.g===G.g).reduce((a,i)=>a+i.p,0);
+    return `<div class="col"><div class="col-head"><h3>${G.title}<span class="sub">${G.sub}</span></h3><span class="num">${moneyR(t)}</span></div>${secsHTML(i=>i.g===G.g)}</div>`}).join("");}
+  prog();
+}
+function prog(){$("progress").textContent=`${all.filter(i=>ticked[i.id]).length} of ${all.length} in the trolley`;}
+$("cols").addEventListener("change",e=>{if(e.target.type!=="checkbox")return;ticked[e.target.dataset.id]=e.target.checked;e.target.closest(".item").classList.toggle("checked",e.target.checked);save();prog();});
+$("v-full").onclick=()=>{view="full";$("v-full").setAttribute("aria-pressed","true");$("v-split").setAttribute("aria-pressed","false");render();};
+$("v-split").onclick=()=>{view="split";$("v-split").setAttribute("aria-pressed","true");$("v-full").setAttribute("aria-pressed","false");render();};
+$("reset").onclick=()=>{ticked={};save();render();};
+$("copy").onclick=()=>{
+  const list=g=>DATA.map(s=>{const its=s.items.filter(i=>g==null||i.g===g);return its.length?s.sec.toUpperCase()+"\n"+its.map(i=>`- ${i.n}: ${i.q}`).join("\n"):""}).filter(Boolean).join("\n\n");
+  const text=view==="full"?list(null):GROUPS.map(G=>`=== ${G.title} ===\n\n`+list(G.g)).join("\n\n");
+  const b=$("copy");navigator.clipboard.writeText(text).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy list",1600)}).catch(()=>{b.textContent="Couldn't copy";setTimeout(()=>b.textContent="Copy list",2000)});
+};
+render();
+</script>
+
+</div>
+</body>
+</html>
